@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "608568903329",
+    "project_id": "see-for-you-alpha-version",
+    "storage_bucket": "see-for-you-alpha-version.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:608568903329:android:5627045f11e7a9bc3892e0",
+        "android_client_info": {
+          "package_name": "com.example.see_for_you_alpha_version"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "608568903329-cgqqg0k1tc20ne3ikrbm6lkm30f9isbc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDb5eky4Atkt2TE1OxZXnYsNW0uhoog3LY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "608568903329-cgqqg0k1tc20ne3ikrbm6lkm30f9isbc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
