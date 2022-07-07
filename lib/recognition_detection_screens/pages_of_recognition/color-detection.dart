@@ -10,16 +10,16 @@ import 'package:see_for_you_alpha_version/recognition_detection_screens/utils/tt
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:socket_io_client/socket_io_client.dart';
 
-class SearchForObject extends StatefulWidget {
-  const SearchForObject({
+class RecognizeColor extends StatefulWidget {
+  const RecognizeColor({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<SearchForObject> createState() => _SearchForObjectState();
+  State<RecognizeColor> createState() => _RecognizeColorState();
 }
 
-class _SearchForObjectState extends State<SearchForObject> {
+class _RecognizeColorState extends State<RecognizeColor> {
   List<CameraDescription>? _cameras;
   CameraController? _controller;
   final textDetector = GoogleMlKit.vision.textDetector();

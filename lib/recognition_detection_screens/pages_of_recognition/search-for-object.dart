@@ -25,7 +25,7 @@ class _SearchForObjectState extends State<SearchForObject> {
   List<CameraDescription>? _cameras;
   CameraController? _controller;
   final textDetector = GoogleMlKit.vision.textDetector();
-  String objectName = '';
+  String objectName='';
   Socket? socket;
   Timer? timer;
   TTS? tts;
@@ -43,8 +43,8 @@ class _SearchForObjectState extends State<SearchForObject> {
 
   /// Each time to start a speech recognition session
   void _startListening() async {
+    print('hello i am listening');
     await _speechToText.listen(onResult: _onSpeechResult, localeId: "en_US");
-
     setState(() {});
   }
 
@@ -53,6 +53,7 @@ class _SearchForObjectState extends State<SearchForObject> {
   /// and the SpeechToText plugin supports setting timeouts on the
   /// listen method.
   void _stopListening() async {
+    print('hello i stopped listening');
     await _speechToText.stop();
     setState(() {});
   }
@@ -61,16 +62,20 @@ class _SearchForObjectState extends State<SearchForObject> {
   /// This is the callback that the SpeechToText plugin calls when
   /// the platform returns recognized words.
   void _onSpeechResult(SpeechRecognitionResult result) {
+    print('hello');
     setState(() {
       _lastWords = result.recognizedWords;
+      print(_lastWords);
     });
     Future.delayed(const Duration(seconds: 2), () {
-      if (_lastWords.contains('ahmed')) {
+      if (_lastWords.isNotEmpty) {
         Future.delayed(const Duration(seconds: 2), () {
-          tts?.speak('hello ahmed');
+          print(_lastWords);
+          setState(() {
+          objectName=_lastWords;
+          });
         });
       }
-
       setState(() {});
     });
   }
@@ -160,42 +165,37 @@ class _SearchForObjectState extends State<SearchForObject> {
           ),
         );
       },
-      onTap: () async {
-        _speechToText.isNotListening ? _startListening : _stopListening;
-        objectName=_speechToText.isListening
-        ? _lastWords
-            : _speechEnabled
-        ? 'Tap the screen to start listening...'
-            : 'Speech not available';
-      },
+      onTap: _speechToText.isNotListening ? _startListening : _stopListening,
       onDoubleTap: ()async {
         playMusic();
         var xFile = await _controller!.takePicture();
         final Uint8List bytes = await xFile.readAsBytes();
         String img64 = base64Encode(bytes);
-
-        socket?.emit(
-          "client:search_item",
-          {
-            "item_name": objectName,
-            "image_base64": img64,
-          },
-        );
-        print("send");
-        socket?.on("my response", (res) {
-          print("received");
-          setState(() {
-            tts?.speak(res);
+        if(objectName.isNotEmpty) {
+          socket?.emit(
+            "client:search_item",
+            {
+              "item_name": objectName,
+              "image_base64": img64,
+            },
+          );
+          print("send");
+          socket?.on("my response", (res) {
+            print("received");
+            setState(() {
+              tts?.speak(res);
+            });
+            print(res);
           });
-          print(res);
-        });
-
+        }
         // final RecognisedText recognisedText = await textDetector
         //     .processImage(InputImage.fromFile(File(xFile.path)));
 
         // print(recognisedText.text);
       },
-      child: Scaffold(
+      child:
+      objectName.isNotEmpty?
+      Scaffold(
         body: SizedBox(
           width: size.width,
           height: size.height,
@@ -205,16 +205,16 @@ class _SearchForObjectState extends State<SearchForObject> {
                 if (_controller != null)
                   Transform.scale(
                       scale: scale, child: CameraPreview(_controller!)),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 100.0),
+                const Padding(
+                  padding: EdgeInsets.only(bottom: 100.0),
                   child: Align(
                     alignment: FractionalOffset.bottomCenter,
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      padding: EdgeInsets.symmetric(horizontal: 20.0),
                       child: Text(
-                        objectName,
-                        style: const TextStyle(
-                          color: Colors.white10,
+                        "Tap on the screen to record object name",
+                        style: TextStyle(
+                          color: Colors.white24,
                         ),
                         ),
                       ),
@@ -235,7 +235,48 @@ class _SearchForObjectState extends State<SearchForObject> {
             ),
           ),
         ),
-      ),
+      ):
+      Scaffold(
+        body: SizedBox(
+    width: size.width,
+    height: size.height,
+    child: SafeArea(
+    child: Stack(
+    children: [
+    if (_controller != null)
+    Transform.scale(
+    scale: scale, child: CameraPreview(_controller!)),
+     Padding(
+    padding: const EdgeInsets.only(bottom: 100.0),
+    child: Align(
+    alignment: FractionalOffset.bottomCenter,
+    child: Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+    child: Text('pen',
+      //objectName,
+    style: const TextStyle(
+    color: Colors.white24,
+    ),
+    ),
+    ),
+    ),
+    ),
+    const Padding(
+    padding: EdgeInsets.only(bottom: 20.0),
+    child: Align(
+    alignment: FractionalOffset.bottomCenter,
+    child:Icon(Icons.camera,
+    size: 60.0,
+    color: Colors.white,
+
+    ),
+    ),
+    ),
+    ],
+    ),
+    ),
+    ),
+    ),
     );
   }
 }

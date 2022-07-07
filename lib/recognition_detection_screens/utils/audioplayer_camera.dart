@@ -3,7 +3,7 @@ import 'package:audioplayers/audioplayers.dart';
 AudioPlayer audioPlayer = AudioPlayer();
 PlayerState playerState = PlayerState.PAUSED;
 AudioCache? audioCache;
-String path = 'assets/ringtones/camera_sound.mp3';
+String path = 'ringtones/camera_sound.mp3';
 
 initAudioPlayerCameraSound(){
   audioCache = AudioCache(fixedPlayer: audioPlayer);
@@ -18,7 +18,7 @@ audioPlayer.dispose();
 audioCache?.clearAll();
 }
 playMusic() async {
-  await audioCache?.loop(path);
+  await audioCache?.play(path);
 }
 
 pauseMusic() async {

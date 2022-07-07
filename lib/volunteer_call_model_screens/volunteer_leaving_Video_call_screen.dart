@@ -14,7 +14,7 @@ class VolunteerLeavingVideoCallScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Image.asset('assets/image/exit.png'),
+          Image.asset('assets/images/exit.png'),
           const SizedBox(
             height:30.0,
           ),
@@ -31,20 +31,39 @@ class VolunteerLeavingVideoCallScreen extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(
-            height:30.0,
+          Center(
+            child: Container(
+              width: 160.0,
+              height: 80.0,
+              padding: const EdgeInsets.all(8.0),
+              child: MaterialButton(
+                onPressed: () {
+                  VolunteerCubitSide.get(context).destroyMe();
+                  Navigator.pop(context);
+                },
+                color: Colors.blue.shade800,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children:const [
+                    Icon(
+                      Icons.missed_video_call_outlined,
+                      size: 40.0,
+                      color: Colors.white,
+                    ),
+                    Text('Exit',
+                      style:TextStyle(
+                        color: Colors.white,
+                        fontSize: 24.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
+
+                  ],
+                ),
+              ),
+            ),
           ),
-               IconButton(
-                 onPressed: () {
-                     VolunteerCubitSide.get(context).destroyMe();
-                     Navigator.pop(context);
-                   },
-                   color: Colors.red,
-                   icon: const Icon(
-                     Icons.missed_video_call_outlined,
-                     color: Colors.white,
-                   ),
-                 ),
+
         ],
       ),
     );

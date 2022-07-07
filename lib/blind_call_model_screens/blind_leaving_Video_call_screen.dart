@@ -26,7 +26,7 @@ class BlindLeavingVideoCallScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Image.asset('assets/image/exit.png'),
+              Image.asset('assets/images/exit.png'),
               const SizedBox(
                 height:30.0,
               ),

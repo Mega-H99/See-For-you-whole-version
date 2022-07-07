@@ -17,7 +17,7 @@ class VolunteerInCallScreen extends StatelessWidget {
           Column(
         children: [
           SizedBox(
-              height: 500,
+              height: 200,
               child: Row(children: [
                 Flexible(
                   child: Container(

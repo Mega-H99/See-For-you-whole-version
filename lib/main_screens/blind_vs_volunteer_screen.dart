@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:see_for_you_alpha_version/recognition_detection_screens/pages_of_recognition/stt_screen.dart';
 
+import '../recognition_detection_screens/pages_of_recognition/rushdi_stt_screen.dart';
 import 'call_blind_screen.dart';
 import 'call_screen_volunteer.dart';
 
@@ -25,7 +27,7 @@ class _BlindVSVolunteerScreenState extends State<BlindVSVolunteerScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => CallScreenBlind(),
+                    builder: (context) => const RushdiSttScreen(),
                   ),
                 );
               },

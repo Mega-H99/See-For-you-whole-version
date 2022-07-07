@@ -87,7 +87,8 @@ class _FaceRecognitionState extends State<FaceRecognition> {
     initAudioPlayerCameraSound();
     tts!.speak(
         'Welcome to face recognize mode'
-        'Please tap on the screen and say a command like'
+        'Please tap on the screen and say a command followed by the person name'
+        'these commands can be like the following commands'
         'save or store or remove or delete or identify or verify '
         'followed by the person name'
         'then focus your mobile towards the person you want to recognize'

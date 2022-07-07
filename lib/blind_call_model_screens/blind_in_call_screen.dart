@@ -58,7 +58,7 @@ class BlindInCallScreen extends StatelessWidget {
             },
 
             child: SizedBox(
-                height: 500,
+                height: 200,
                 child: Row(children: [
                   Flexible(
                     child: Container(

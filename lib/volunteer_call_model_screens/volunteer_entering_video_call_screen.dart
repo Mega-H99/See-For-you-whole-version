@@ -34,19 +34,40 @@ class VolunteerNotReadyScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(
-            height:30.0,
+            height:4.0,
           ),
-          IconButton(
-             onPressed: () {
-                VolunteerCubitSide.get(context).screenIndex=1;
-                 VolunteerCubitSide.get(context).initializeMe();
-               },
-               color: Colors.amber,
-               icon: const Icon(
-                 Icons.video_call,
-                 color: Colors.white,
-               ),
-             ),
+          Center(
+            child: Container(
+              width: 160.0,
+              height: 80.0,
+              padding: const EdgeInsets.all(8.0),
+              child: MaterialButton(
+                 onPressed: () {
+                    VolunteerCubitSide.get(context).screenIndex=1;
+                     VolunteerCubitSide.get(context).initializeMe();
+                   },
+                   color: Colors.blue.shade800,
+                   child: Row(
+                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                     children:const [
+                      Icon(
+                       Icons.video_call,
+                       size: 40.0,
+                       color: Colors.white,
+                     ),
+                       Text('Enter',
+                       style:TextStyle(
+                         color: Colors.white,
+                         fontSize: 24.0,
+                         fontWeight: FontWeight.bold,
+                       ),
+                       )
+
+                     ],
+                   ),
+                 ),
+            ),
+          ),
 
         ],
       ),

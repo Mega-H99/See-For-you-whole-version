@@ -10,16 +10,16 @@ import 'package:see_for_you_alpha_version/recognition_detection_screens/utils/tt
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:socket_io_client/socket_io_client.dart';
 
-class Banknotes extends StatefulWidget {
-  const Banknotes({
+class PlacesScreen extends StatefulWidget {
+  const PlacesScreen({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<Banknotes> createState() => _BanknotesState();
+  State<PlacesScreen> createState() => _PlacesScreenState();
 }
 
-class _BanknotesState extends State<Banknotes> {
+class _PlacesScreenState extends State<PlacesScreen> {
   List<CameraDescription>? _cameras;
   CameraController? _controller;
   final textDetector = GoogleMlKit.vision.textDetector();
@@ -36,11 +36,10 @@ class _BanknotesState extends State<Banknotes> {
     initializeSocket();
     initializeTTS();
     initAudioPlayerCameraSound();
-    tts!.speak('Welcome to banknotes recognition mode'
-        'Please focus your mobile towards the money paper you want to detect'
-    'then double tap on the screen to capture and detect the amount of money '
-        'in the picture'
-    'if you want to return to the main menu of all features '
+    tts!.speak('Welcome to Places recognition mode'
+        'Please focus your mobile camera to detect place you are in'
+        'then double tap on the screen to capture and recognize the place you are in'
+        'if you want to return to the main menu of all features '
         'press and hold on the screen');
 
 
@@ -123,14 +122,14 @@ class _BanknotesState extends State<Banknotes> {
         String img64 = base64Encode(bytes);
 
         socket?.emit(
-          "client:identify a banknote",
+          "client:recognise a scene",
           {
             // "item_name": _itemNameController.text,
             "image_base64": img64,
           },
         );
         print("send");
-        socket?.on("banknote Detection Server: Response", (res) {
+        socket?.on("scene Detection Server: Response", (res) {
           print("received");
           setState(() {
             tts?.speak(res);
