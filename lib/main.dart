@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:see_for_you_alpha_version/blind_call_model_screens/blind_ringing_screen.dart';
 import 'package:see_for_you_alpha_version/main_screens/blind_vs_volunteer_screen.dart';
+import 'package:see_for_you_alpha_version/main_screens/blind_vs_volunteer_screen_with_voice.dart';
 import 'package:see_for_you_alpha_version/main_screens/blind_vs_volunteer_with_sign_in_screen.dart';
 import 'package:see_for_you_alpha_version/main_screens/call_blind_screen.dart';
 import 'package:see_for_you_alpha_version/main_screens/call_screen_volunteer.dart';
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blueGrey,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: const BlindVSVolunteerScreen(),
+      home: const BlindVSVolunteerScreenWithVoice(),
     );
   }
 }
