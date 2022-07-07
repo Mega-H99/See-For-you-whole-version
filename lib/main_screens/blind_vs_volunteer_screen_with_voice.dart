@@ -100,12 +100,14 @@ State<BlindVSVolunteerScreenWithVoice> {
               child: Container(
                 color: Colors.blue,
                 width: double.infinity,
-                child: const Text(
-                  'Blind',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 32.0,
-                    color: Colors.white,
+                child: const Center(
+                  child: Text(
+                    'Blind',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 32.0,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
@@ -114,12 +116,14 @@ State<BlindVSVolunteerScreenWithVoice> {
               child: Container(
                 color: Colors.purple,
                 width: double.infinity,
-                child: const Text(
-                  'Volunteer',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 32.0,
-                    color: Colors.white,
+                child: const Center(
+                  child: Text(
+                    'Volunteer',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 32.0,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
