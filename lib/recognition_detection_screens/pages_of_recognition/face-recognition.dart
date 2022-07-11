@@ -14,7 +14,7 @@ import 'package:speech_to_text/speech_to_text.dart';
 
 class FaceRecognition extends StatefulWidget {
   const FaceRecognition({
-    Key? key,
+    Key key,
   }) : super(key: key);
 
   @override
@@ -22,16 +22,16 @@ class FaceRecognition extends StatefulWidget {
 }
 
 class _FaceRecognitionState extends State<FaceRecognition> {
-  List<CameraDescription>? _cameras;
-  CameraController? _controller;
+  List<CameraDescription> _cameras;
+  CameraController _controller;
   final textDetector = GoogleMlKit.vision.textDetector();
-  Socket? socket;
+  Socket socket;
   String faceCommand ='';
 
-  Timer? timer;
-  TTS? tts;
-  List<String>? potentialname;
-  String? name;
+  Timer timer;
+  TTS tts;
+  List<String> potentialname;
+  String name;
   final SpeechToText _speechToText = SpeechToText();
   bool _speechEnabled = false;
   String _lastWords = '';
@@ -85,7 +85,7 @@ class _FaceRecognitionState extends State<FaceRecognition> {
     initializeSocket();
     initializeTTS();
     initAudioPlayerCameraSound();
-    tts!.speak(
+    tts.speak(
         'Welcome to face recognize mode'
         'Please tap on the screen and say a command followed by the person name'
         'these commands can be like the following commands'
@@ -98,7 +98,7 @@ class _FaceRecognitionState extends State<FaceRecognition> {
   }
 
   void emitImage() async {
-    var xFile = await _controller!.takePicture();
+    var xFile = await _controller.takePicture();
     final Uint8List bytes = await xFile.readAsBytes();
     String img64 = base64Encode(bytes);
 
@@ -131,17 +131,17 @@ class _FaceRecognitionState extends State<FaceRecognition> {
 
   @override
   void dispose() {
-    _controller!.dispose();
+    _controller.dispose();
     destroyAudioPlayerCameraSound();
     super.dispose();
   }
 
   void initializeCameraController() {
-    _controller = CameraController(_cameras![0], ResolutionPreset.max);
-    _controller!.initialize().then((_) {
+    _controller = CameraController(_cameras[0], ResolutionPreset.max);
+    _controller.initialize().then((_) {
       if (!mounted) {
-        _controller!.setFocusMode(FocusMode.locked);
-        _controller!.setFlashMode(FlashMode.off);
+        _controller.setFocusMode(FocusMode.locked);
+        _controller.setFlashMode(FlashMode.off);
         return;
       }
       setState(() {});
@@ -153,7 +153,7 @@ class _FaceRecognitionState extends State<FaceRecognition> {
     final size = MediaQuery.of(context).size;
     double scale = 0.0;
     if (_controller != null) {
-      scale = 1 / (_controller!.value.aspectRatio * size.aspectRatio);
+      scale = 1 / (_controller.value.aspectRatio * size.aspectRatio);
     }
 
     return GestureDetector(
@@ -174,7 +174,7 @@ class _FaceRecognitionState extends State<FaceRecognition> {
         );
       },
       onDoubleTap: () async {
-          var xFile = await _controller!.takePicture();
+          var xFile = await _controller.takePicture();
           final Uint8List bytes = await xFile.readAsBytes();
           String img64 = base64Encode(bytes);
 
@@ -190,7 +190,7 @@ class _FaceRecognitionState extends State<FaceRecognition> {
                 : potentialname =
                 faceCommand.split('store');
 
-            name = potentialname?[1];
+            name = potentialname[1];
             name = name?.trim();
             socket?.emit("client: Save Friend", {
               'data': img64,
@@ -209,7 +209,7 @@ class _FaceRecognitionState extends State<FaceRecognition> {
                 faceCommand.split('remove')
                 : potentialname =
                 faceCommand.split('delete');
-            name = potentialname?[1];
+            name = potentialname[1];
             name = name?.trim();
             socket?.emit("client: Remove Friend", {"name": name});
             print("deleted");
@@ -224,7 +224,7 @@ class _FaceRecognitionState extends State<FaceRecognition> {
                 faceCommand.split('identify')
                 : potentialname =
                 faceCommand.split('verify');
-            name = potentialname?[1];
+            name = potentialname[1];
             name = name?.trim();
             socket?.emit("client: Verify Friend", {
               "data": img64,
@@ -262,7 +262,7 @@ class _FaceRecognitionState extends State<FaceRecognition> {
               children: [
                 if (_controller != null)
                   Transform.scale(
-                      scale: scale, child: CameraPreview(_controller!)),
+                      scale: scale, child: CameraPreview(_controller)),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 100.0),
                   child: Align(

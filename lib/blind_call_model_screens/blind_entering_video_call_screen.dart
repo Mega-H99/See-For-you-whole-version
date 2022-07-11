@@ -5,19 +5,17 @@ import 'package:see_for_you_alpha_version/socket.io_cubit/blind_side_cubit.dart'
 
 
 class BlindNotReadyScreen extends StatelessWidget {
-  const BlindNotReadyScreen({Key? key}) : super(key: key);
+  const BlindNotReadyScreen({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     BlindCubitSide.get(context).
     speak("Ready to start video call double tap to enter");
-
-
     return  GestureDetector(
       onDoubleTap: (){
         BlindCubitSide.get(context).speak('Entering Video Call');
         BlindCubitSide.get(context).screenIndex=1;
-        BlindCubitSide.get(context).initializeMe();
+        //BlindCubitSide.get(context).initializeMe();
       },
       onTap: (){
         BlindCubitSide.get(context).

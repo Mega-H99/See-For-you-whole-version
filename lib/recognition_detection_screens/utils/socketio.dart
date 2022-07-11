@@ -1,9 +1,9 @@
 import 'package:socket_io_client/socket_io_client.dart';
 
 class SocketIO {
-  late final socket;
+   var socket;
 
-  SocketIO() {
+  SocketIO(this.socket) {
     initializeSocket();
   }
 

@@ -3,7 +3,7 @@ import 'package:see_for_you_alpha_version/socket.io_cubit/volunteer_side_cubit.d
 import 'package:socket_io_client/socket_io_client.dart';
 
 class VolunteerCallingScreen extends StatelessWidget {
-  const VolunteerCallingScreen({Key? key}) : super(key: key);
+  const VolunteerCallingScreen({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

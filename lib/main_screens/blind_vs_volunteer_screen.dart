@@ -6,7 +6,7 @@ import 'call_blind_screen.dart';
 import 'call_screen_volunteer.dart';
 
 class BlindVSVolunteerScreen extends StatefulWidget {
-  const BlindVSVolunteerScreen({Key? key}) : super(key: key);
+  const BlindVSVolunteerScreen({Key key}) : super(key: key);
 
   @override
   State<BlindVSVolunteerScreen> createState() => _BlindVSVolunteerScreenState();

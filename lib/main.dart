@@ -11,6 +11,7 @@ import 'package:see_for_you_alpha_version/recognition_detection_screens/pages_of
 import 'package:see_for_you_alpha_version/recognition_detection_screens/pages_of_recognition/stt_screen.dart';
 
 import 'blind_call_model_screens/blind_entering_video_call_screen.dart';
+import 'main_screens/blind_vs_voluntter_final_screen.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,7 +20,7 @@ void main() async{
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -28,7 +29,9 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blueGrey,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: const BlindVSVolunteerScreenWithVoice(),
+      home:
+      const BlindVSVolunteerFinalScreen(),
+      //const BlindVSVolunteerScreenWithVoice(),
     );
   }
 }

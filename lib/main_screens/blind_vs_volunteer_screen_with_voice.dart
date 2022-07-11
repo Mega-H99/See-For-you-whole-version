@@ -6,7 +6,7 @@ import '../recognition_detection_screens/pages_of_recognition/rushdi_stt_screen.
 import 'call_screen_volunteer.dart';
 
 class BlindVSVolunteerScreenWithVoice extends StatefulWidget {
-  const BlindVSVolunteerScreenWithVoice({Key? key}) : super(key: key);
+  const BlindVSVolunteerScreenWithVoice({Key key}) : super(key: key);
 
   @override
   State<BlindVSVolunteerScreenWithVoice> createState() =>

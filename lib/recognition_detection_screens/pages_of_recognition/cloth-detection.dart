@@ -12,7 +12,7 @@ import 'package:socket_io_client/socket_io_client.dart';
 
 class ClothesDetection extends StatefulWidget {
   const ClothesDetection({
-    Key? key,
+    Key key,
   }) : super(key: key);
 
   @override
@@ -20,14 +20,14 @@ class ClothesDetection extends StatefulWidget {
 }
 
 class _ClothesDetectionState extends State<ClothesDetection> {
-  List<CameraDescription>? _cameras;
-  CameraController? _controller;
+  List<CameraDescription> _cameras;
+  CameraController _controller;
   final textDetector = GoogleMlKit.vision.textDetector();
-  Socket? socket;
+  Socket socket;
   // TextEditingController _itemNameController = TextEditingController();
 
-  Timer? timer;
-  TTS? tts;
+  Timer timer;
+  TTS tts;
 
   @override
   void initState() {
@@ -36,7 +36,7 @@ class _ClothesDetectionState extends State<ClothesDetection> {
     initializeSocket();
     initializeTTS();
     initAudioPlayerCameraSound();
-    tts!.speak(
+    tts.speak(
         'Welcome to cloth recognize mode'
             'Please focus your mobile towards the cloth you want to detect'
             'then double tap on the screen to capture and recognize the item'
@@ -45,7 +45,7 @@ class _ClothesDetectionState extends State<ClothesDetection> {
   }
 
   void emitImage() async {
-    var xFile = await _controller!.takePicture();
+    var xFile = await _controller.takePicture();
     final Uint8List bytes = await xFile.readAsBytes();
     String img64 = base64Encode(bytes);
 
@@ -78,17 +78,17 @@ class _ClothesDetectionState extends State<ClothesDetection> {
 
   @override
   void dispose() {
-    _controller!.dispose();
+    _controller.dispose();
     destroyAudioPlayerCameraSound();
     super.dispose();
   }
 
   void initializeCameraController() {
-    _controller = CameraController(_cameras![0], ResolutionPreset.max);
-    _controller!.initialize().then((_) {
+    _controller = CameraController(_cameras[0], ResolutionPreset.max);
+    _controller.initialize().then((_) {
       if (!mounted) {
-        _controller!.setFocusMode(FocusMode.locked);
-        _controller!.setFlashMode(FlashMode.off);
+        _controller.setFocusMode(FocusMode.locked);
+        _controller.setFlashMode(FlashMode.off);
         return;
       }
       setState(() {});
@@ -100,7 +100,7 @@ class _ClothesDetectionState extends State<ClothesDetection> {
     final size = MediaQuery.of(context).size;
     double scale = 0.0;
     if (_controller != null) {
-      scale = 1 / (_controller!.value.aspectRatio * size.aspectRatio);
+      scale = 1 / (_controller.value.aspectRatio * size.aspectRatio);
     }
 
     return GestureDetector(
@@ -113,7 +113,7 @@ class _ClothesDetectionState extends State<ClothesDetection> {
         );
       },
       onDoubleTap: ()async {
-        var xFile = await _controller!.takePicture();
+        var xFile = await _controller.takePicture();
         final Uint8List bytes = await xFile.readAsBytes();
         String img64 = base64Encode(bytes);
 
@@ -148,7 +148,7 @@ class _ClothesDetectionState extends State<ClothesDetection> {
               children: [
                 if (_controller != null)
                   Transform.scale(
-                      scale: scale, child: CameraPreview(_controller!)),
+                      scale: scale, child: CameraPreview(_controller)),
                 // Padding(
                 //   padding: const EdgeInsets.only(bottom: 100.0),
                 //   child: Align(

@@ -7,7 +7,7 @@ import '../socket.io_cubit/blind_states.dart';
 import '../socket.io_cubit/volunteer_states.dart';
 
 class VolunteerInCallScreen extends StatelessWidget {
-  const VolunteerInCallScreen({Key? key}) : super(key: key);
+  const VolunteerInCallScreen({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

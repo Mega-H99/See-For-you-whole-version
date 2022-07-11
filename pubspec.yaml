@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.16.0 <3.0.0"
+  sdk: ">=2.7.0 <3.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -62,7 +62,9 @@ dependencies:
   camera: ^0.9.4+3
   google_ml_kit: ^0.7.2
   speech_to_text: ^5.4.3
-
+  #Tracking Part
+  flutter_bluetooth_serial: ^0.2.2
+  url_launcher:
 
 dev_dependencies:
   flutter_test:
@@ -88,15 +90,23 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+    - assets/images/video-call.png
+    - assets/images/chatbot.png
+    - assets/images/map.png
+    - assets/images/walking.png
     - assets/images/entering_call.png
     - assets/images/blind2.png
     - assets/images/eye.png
     - assets/images/helping-hand.png
     - assets/images/exit.png
+    - assets/images/loadingGIF.gif
     - assets/images/closing_call.png
+    - assets/images/blind-person.png
+    - assets/images/volunteer.png
     - assets/ringtones/app_running.mp3
     - assets/ringtones/classic_ringtone.mp3
     - assets/ringtones/camera_sound.mp3
+    - assets/ringtones/alarm.mp3
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

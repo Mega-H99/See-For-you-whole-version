@@ -5,7 +5,7 @@ import '../socket.io_cubit/volunteer_side_cubit.dart';
 import '../socket.io_cubit/volunteer_states.dart';
 
 class CallScreenVolunteer extends StatelessWidget {
-  const CallScreenVolunteer({Key? key}) : super(key: key);
+  const CallScreenVolunteer({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context)

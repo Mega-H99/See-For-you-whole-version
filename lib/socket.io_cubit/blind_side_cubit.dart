@@ -56,24 +56,24 @@ class BlindCubitSide extends Cubit<BlindStates> {
   bool noAnswer = true;
   int callRetries = 0;
 
-  String? blindId;
-  String? roomId;
-  String? volunteerID;
-  String? blindSdp;
+  String blindId;
+  String roomId;
+  String volunteerID;
+  String blindSdp;
 
   bool _offer = false;
-  RTCPeerConnection? _peerConnection;
-  MediaStream? _localStream;
+  RTCPeerConnection _peerConnection;
+  MediaStream _localStream;
   final RTCVideoRenderer localRenderer = RTCVideoRenderer();
   final RTCVideoRenderer remoteRenderer = RTCVideoRenderer();
 
-  late Socket socket;
+   Socket socket;
   bool timeout = true;
   FlutterTts flutterTts = FlutterTts();
 
   AudioPlayer audioPlayer = AudioPlayer();
   PlayerState playerState = PlayerState.PAUSED;
-  AudioCache? audioCache;
+  AudioCache audioCache;
   String path = 'assets/ringtones/app_running.mp3';
 
   IconData muted = Icons.mic;
@@ -90,6 +90,9 @@ class BlindCubitSide extends Cubit<BlindStates> {
   bool isVideoOff = false;
 
   bool changer = false;
+
+  bool isAllInitializedChecker = false;
+  bool isPartialInitializedChecker = false;
 
 // first & last step in video call.
 
@@ -123,7 +126,8 @@ class BlindCubitSide extends Cubit<BlindStates> {
     audioPlayer.release();
     audioPlayer.dispose();
     audioCache?.clearAll();
-
+    isAllInitializedChecker=false;
+    isPartialInitializedChecker= false;
     emit(BlindDisposeState());
   }
 
@@ -147,7 +151,7 @@ class BlindCubitSide extends Cubit<BlindStates> {
 // for initializing the video call on blind side.
 
   initRenderer() async {
-    await localRenderer.initialize();
+    await localRenderer.initialize().then((value) => isAllInitializedChecker=true,);
     await remoteRenderer.initialize();
   }
 
@@ -222,7 +226,7 @@ class BlindCubitSide extends Cubit<BlindStates> {
     RTCPeerConnection pc =
         await createPeerConnection(configuration, offerSdpConstraints);
 
-    pc.addStream(_localStream!);
+    pc.addStream(_localStream);
 
     pc.onIceConnectionState = (e) {
       print(e);
@@ -253,13 +257,13 @@ class BlindCubitSide extends Cubit<BlindStates> {
 
   createOffer() async {
     RTCSessionDescription description =
-        await _peerConnection!.createOffer({'offerToReceiveVideo': 1});
-    blindSdp = description.sdp!;
+        await _peerConnection.createOffer({'offerToReceiveVideo': 1});
+    blindSdp = description.sdp;
     socket.emit("blind: send sdp", blindSdp);
     print("sending sdp...");
     _offer = true;
     // handleReceivingNoVolunteerFound(blindSdp);
-    _peerConnection!.setLocalDescription(description);
+    _peerConnection.setLocalDescription(description);
     emit(BlindSettingLocalDescriptionState());
     _handleReceivingVolunteerCandidate();
     playMusic();
@@ -272,7 +276,7 @@ class BlindCubitSide extends Cubit<BlindStates> {
         RTCSessionDescription(sdp, _offer ? 'answer' : 'offer');
     print('Remote Description is set');
 
-    await _peerConnection!.setRemoteDescription(description);
+    await _peerConnection.setRemoteDescription(description);
     changer = true;
     emit(BlindSettingRemoteDescriptionState());
   }
@@ -316,7 +320,7 @@ class BlindCubitSide extends Cubit<BlindStates> {
       print('recieving sdp...');
       await _setRemoteDescription(volunteerSdp);
       print('Remote sdp is set');
-      await _peerConnection!.addCandidate(candidate);
+      await _peerConnection.addCandidate(candidate);
       print('candidate is set');
       emit(BlindReceivingVolunteerRemoteInfo());
       if (!timeout) {
@@ -331,81 +335,81 @@ class BlindCubitSide extends Cubit<BlindStates> {
 // for using call features on blind side
 
   void mute() {
-    if (_peerConnection!.getRemoteStreams()[0]!.getAudioTracks()[0].enabled) {
-      _localStream!.getAudioTracks()[0].enabled =
-          !_localStream!.getAudioTracks()[0].enabled;
+    if (_peerConnection.getRemoteStreams()[0].getAudioTracks()[0].enabled) {
+      _localStream.getAudioTracks()[0].enabled =
+          !_localStream.getAudioTracks()[0].enabled;
     }
     muted =
-        _localStream!.getAudioTracks()[0].enabled ? Icons.mic : Icons.mic_off;
+        _localStream.getAudioTracks()[0].enabled ? Icons.mic : Icons.mic_off;
 
     colorMuted =
-        _localStream!.getAudioTracks()[0].enabled ? Colors.white : Colors.red;
+        _localStream.getAudioTracks()[0].enabled ? Colors.white : Colors.red;
 
-    isMute = _localStream!.getAudioTracks()[0].enabled;
+    isMute = _localStream.getAudioTracks()[0].enabled;
 
     emit(BlindChangeMuteState());
   }
 
   void deafen() {
-    if ((_localStream!.getAudioTracks()[0].enabled &&
-            _peerConnection!
-                .getRemoteStreams()[0]!
+    if ((_localStream.getAudioTracks()[0].enabled &&
+            _peerConnection
+                .getRemoteStreams()[0]
                 .getAudioTracks()[0]
                 .enabled) ||
-        (!_localStream!.getAudioTracks()[0].enabled &&
-            !_peerConnection!
-                .getRemoteStreams()[0]!
+        (!_localStream.getAudioTracks()[0].enabled &&
+            !_peerConnection
+                .getRemoteStreams()[0]
                 .getAudioTracks()[0]
                 .enabled)) {
-      _localStream!.getAudioTracks()[0].enabled =
-          !_localStream!.getAudioTracks()[0].enabled;
+      _localStream.getAudioTracks()[0].enabled =
+          !_localStream.getAudioTracks()[0].enabled;
 
-      _peerConnection!.getRemoteStreams()[0]!.getAudioTracks()[0].enabled =
-          !_peerConnection!.getRemoteStreams()[0]!.getAudioTracks()[0].enabled;
-    } else if (!_localStream!.getAudioTracks()[0].enabled &&
-        _peerConnection!.getRemoteStreams()[0]!.getAudioTracks()[0].enabled) {
-      _peerConnection!.getRemoteStreams()[0]!.getAudioTracks()[0].enabled =
-          !_peerConnection!.getRemoteStreams()[0]!.getAudioTracks()[0].enabled;
+      _peerConnection.getRemoteStreams()[0].getAudioTracks()[0].enabled =
+          !_peerConnection.getRemoteStreams()[0].getAudioTracks()[0].enabled;
+    } else if (!_localStream.getAudioTracks()[0].enabled &&
+        _peerConnection.getRemoteStreams()[0].getAudioTracks()[0].enabled) {
+      _peerConnection.getRemoteStreams()[0].getAudioTracks()[0].enabled =
+          !_peerConnection.getRemoteStreams()[0].getAudioTracks()[0].enabled;
     }
-    deafened = (_localStream!.getAudioTracks()[0].enabled &&
-            _peerConnection!.getRemoteStreams()[0]!.getAudioTracks()[0].enabled)
+    deafened = (_localStream.getAudioTracks()[0].enabled &&
+            _peerConnection.getRemoteStreams()[0].getAudioTracks()[0].enabled)
         ? Icons.headset
         : Icons.headset_off;
 
     muted =
-        _localStream!.getAudioTracks()[0].enabled ? Icons.mic : Icons.mic_off;
+        _localStream.getAudioTracks()[0].enabled ? Icons.mic : Icons.mic_off;
 
-    colorDeafen = (_localStream!.getAudioTracks()[0].enabled &&
-            _peerConnection!.getRemoteStreams()[0]!.getAudioTracks()[0].enabled)
+    colorDeafen = (_localStream.getAudioTracks()[0].enabled &&
+            _peerConnection.getRemoteStreams()[0].getAudioTracks()[0].enabled)
         ? Colors.white
         : Colors.red;
 
-    isDeafen = (_localStream!.getAudioTracks()[0].enabled &&
-        _peerConnection!.getRemoteStreams()[0]!.getAudioTracks()[0].enabled);
+    isDeafen = (_localStream.getAudioTracks()[0].enabled &&
+        _peerConnection.getRemoteStreams()[0].getAudioTracks()[0].enabled);
 
     emit(BlindChangeDeafenState());
   }
 
   void switchCamera() async {
     try {
-      await _localStream!.getVideoTracks()[0].switchCamera();
+      await _localStream.getVideoTracks()[0].switchCamera();
     }catch(e){print(e.toString());}
     whichCamera = Icons.flip_camera_ios;
     emit(BlindChangeCameraState());
   }
 
   void videoChange() {
-    _localStream!.getVideoTracks()[0].enabled =
-        !_localStream!.getVideoTracks()[0].enabled;
+    _localStream.getVideoTracks()[0].enabled =
+        !_localStream.getVideoTracks()[0].enabled;
 
-    videoOff = _localStream!.getVideoTracks()[0].enabled
+    videoOff = _localStream.getVideoTracks()[0].enabled
         ? Icons.videocam
         : Icons.videocam_off;
 
     colorVideoOff =
-        _localStream!.getVideoTracks()[0].enabled ? Colors.white : Colors.red;
+        _localStream.getVideoTracks()[0].enabled ? Colors.white : Colors.red;
 
-    isVideoOff = !_localStream!.getVideoTracks()[0].enabled;
+    isVideoOff = !_localStream.getVideoTracks()[0].enabled;
 
     emit(BlindChangeVideoState());
   }

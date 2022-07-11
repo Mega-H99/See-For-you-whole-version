@@ -6,6 +6,9 @@ class VolunteerInitialState extends VolunteerStates {}
 
 class VolunteerFullInitializedState extends VolunteerStates {}
 
+// checking for local & remote initialization
+class VolunteerLocalRendererInitialized extends VolunteerStates {}
+
 // Call Feature States
 
 class VolunteerChangeMuteState extends VolunteerStates {}

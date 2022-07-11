@@ -7,14 +7,14 @@ import 'package:speech_to_text/speech_to_text.dart';
 import 'google_sign_in_provider.dart';
 
 class SignUpWidget extends StatefulWidget {
-  const SignUpWidget({Key? key}) : super(key: key);
+  const SignUpWidget({Key key}) : super(key: key);
 
   @override
   _SignUpWidgetState createState() => _SignUpWidgetState();
 }
 
 class _SignUpWidgetState extends State<SignUpWidget> {
-  bool? isBlind;
+  bool isBlind;
   FlutterTts flutterTts = FlutterTts();
 
   void _initTts() async {
@@ -85,7 +85,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                 ),
                 onPressed: (){
                   final provider = Provider.of<GoogleSignInProvider>(context,listen:false);
-                  provider.googleLogin(isBlind!);
+                  provider.googleLogin(isBlind);
                 },
                 icon: const Icon(
                   FontAwesomeIcons.google,

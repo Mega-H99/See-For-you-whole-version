@@ -14,15 +14,15 @@ import 'package:speech_to_text/speech_to_text.dart';
 
 
 class LoggedInWidget extends StatefulWidget {
-  const LoggedInWidget({Key? key}) : super(key: key);
+  const LoggedInWidget({Key key}) : super(key: key);
 
   @override
   _LoggedInWidgetState createState() => _LoggedInWidgetState();
 }
 
 class _LoggedInWidgetState extends State<LoggedInWidget> {
-  final User user = FirebaseAuth.instance.currentUser!;
-  UserData? userData;
+  final User user = FirebaseAuth.instance.currentUser;
+  UserData userData;
 
   // late DocumentSnapshot<Map<String,dynamic>> snap;
   // 1 'displayName': displayName, Done
@@ -104,7 +104,7 @@ class _LoggedInWidgetState extends State<LoggedInWidget> {
         .snapshots() ;
     snap.forEach((element) {
       setState(() {
-        userData = UserData.fromMap(element.data()!);
+        userData = UserData.fromMap(element.data());
 
       });
       print(userData);
@@ -123,8 +123,8 @@ class _LoggedInWidgetState extends State<LoggedInWidget> {
     // {
     //   return Text('error:${snap.error}');
     // }
-    if(userData!.isBlind!) {
-      speak('Hello ${userData!.displayName} you are logged in'
+    if(userData.isBlind) {
+      speak('Hello ${userData.displayName} you are logged in'
           'Here is your account data displayed on the screen '
           'you know that from your name the current account being used'
           'but if you want to further check for the rest of the information'
@@ -137,8 +137,8 @@ class _LoggedInWidgetState extends State<LoggedInWidget> {
 
       return GestureDetector(
         onTap: (){
-        if(userData!.isBlind!) {
-          speak('Hello ${userData!.displayName} you are logged in'
+        if(userData.isBlind) {
+          speak('Hello ${userData.displayName} you are logged in'
               'Here is your account data displayed on the screen '
               'you know that from your name the current account being used'
               'but if you want to further check for the rest of the information'
@@ -196,9 +196,9 @@ class _LoggedInWidgetState extends State<LoggedInWidget> {
                     CircleAvatar(
                       radius: 30.0,
                       backgroundColor:
-                      userData!.isBlind! ? Colors.blue : Colors.purple,
+                      userData.isBlind ? Colors.blue : Colors.purple,
                       child: Text(
-                        userData!.isBlind! ? 'Blind' : 'volunteer',
+                        userData.isBlind ? 'Blind' : 'volunteer',
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 14.0,
@@ -210,8 +210,8 @@ class _LoggedInWidgetState extends State<LoggedInWidget> {
                     ),
                     const SizedBox(height: 32.0,),
                     Text(
-                      userData!.displayName != null ?
-                      'Welcome ' + userData!.displayName! :
+                      userData.displayName != null ?
+                      'Welcome ' + userData.displayName :
                       'Name is not contained',
                       style: const TextStyle(
                         fontSize: 24,
@@ -222,22 +222,22 @@ class _LoggedInWidgetState extends State<LoggedInWidget> {
                     CircleAvatar(
                       radius: 60,
                       backgroundImage: NetworkImage(
-                          userData!.avatarURL != null ?
-                          userData!.avatarURL! :
+                          userData.avatarURL != null ?
+                          userData.avatarURL :
                           'https://www.elbalad.news/UploadCache/libfiles/904/7/600x338o/303.jpg'
 
                       ),
                     ),
                     const SizedBox(height: 8,),
                     Text(
-                      userData!.phoneNumber != null ?
-                      'phoneNumber: ' + userData!.phoneNumber! :
+                      userData.phoneNumber != null ?
+                      'phoneNumber: ' + userData.phoneNumber :
                       'phone number is not contained',
                       style: const TextStyle(color: Colors.white, fontSize: 16),
                     ),
                     const SizedBox(height: 8,),
                     Text(
-                      'Email: ' + userData!.email!,
+                      'Email: ' + userData.email,
                       style: const TextStyle(color: Colors.white, fontSize: 16),
                     ),
                     const SizedBox(height: 32.0,),
@@ -312,9 +312,9 @@ class _LoggedInWidgetState extends State<LoggedInWidget> {
                   CircleAvatar(
                     radius: 30.0,
                     backgroundColor:
-                    userData!.isBlind! ? Colors.blue : Colors.purple,
+                    userData.isBlind ? Colors.blue : Colors.purple,
                     child: Text(
-                      userData!.isBlind! ? 'Blind' : 'volunteer',
+                      userData.isBlind ? 'Blind' : 'volunteer',
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 14.0,
@@ -326,8 +326,8 @@ class _LoggedInWidgetState extends State<LoggedInWidget> {
                   ),
                   const SizedBox(height: 32.0,),
                   Text(
-                    userData!.displayName != null ?
-                    'Welcome ' + userData!.displayName! :
+                    userData.displayName != null ?
+                    'Welcome ' + userData.displayName :
                     'Name is not contained',
                     style: const TextStyle(
                       fontSize: 24,
@@ -338,22 +338,22 @@ class _LoggedInWidgetState extends State<LoggedInWidget> {
                   CircleAvatar(
                     radius: 60,
                     backgroundImage: NetworkImage(
-                        userData!.avatarURL != null ?
-                        userData!.avatarURL! :
+                        userData.avatarURL != null ?
+                        userData.avatarURL :
                         'https://www.elbalad.news/UploadCache/libfiles/904/7/600x338o/303.jpg'
 
                     ),
                   ),
                   const SizedBox(height: 8,),
                   Text(
-                    userData!.phoneNumber != null ?
-                    'phoneNumber: ' + userData!.phoneNumber! :
+                    userData.phoneNumber != null ?
+                    'phoneNumber: ' + userData.phoneNumber :
                     'phone number is not contained',
                     style: const TextStyle(color: Colors.white, fontSize: 16),
                   ),
                   const SizedBox(height: 8,),
                   Text(
-                    'Email: ' + userData!.email!,
+                    'Email: ' + userData.email,
                     style: const TextStyle(color: Colors.white, fontSize: 16),
                   ),
                   const SizedBox(height: 32.0,),

@@ -14,7 +14,7 @@ import 'package:speech_to_text/speech_to_text.dart';
 
 class SearchForObject extends StatefulWidget {
   const SearchForObject({
-    Key? key,
+    Key key,
   }) : super(key: key);
 
   @override
@@ -22,13 +22,13 @@ class SearchForObject extends StatefulWidget {
 }
 
 class _SearchForObjectState extends State<SearchForObject> {
-  List<CameraDescription>? _cameras;
-  CameraController? _controller;
+  List<CameraDescription> _cameras;
+  CameraController _controller;
   final textDetector = GoogleMlKit.vision.textDetector();
   String objectName='';
-  Socket? socket;
-  Timer? timer;
-  TTS? tts;
+  Socket socket;
+  Timer timer;
+  TTS tts;
   final SpeechToText _speechToText = SpeechToText();
   bool _speechEnabled = false;
   String _lastWords = '';
@@ -87,7 +87,7 @@ class _SearchForObjectState extends State<SearchForObject> {
     initializeSocket();
     initializeTTS();
     initAudioPlayerCameraSound();
-    tts!.speak(
+    tts.speak(
         'Welcome to search for an object mode'
             'Please tap on the screen and say the name of the object you are'
             'searching for '
@@ -98,7 +98,7 @@ class _SearchForObjectState extends State<SearchForObject> {
   }
 
   void emitImage() async {
-    var xFile = await _controller!.takePicture();
+    var xFile = await _controller.takePicture();
     final Uint8List bytes = await xFile.readAsBytes();
     String img64 = base64Encode(bytes);
 
@@ -131,17 +131,17 @@ class _SearchForObjectState extends State<SearchForObject> {
 
   @override
   void dispose() {
-    _controller!.dispose();
+    _controller.dispose();
     destroyAudioPlayerCameraSound();
     super.dispose();
   }
 
   void initializeCameraController() {
-    _controller = CameraController(_cameras![0], ResolutionPreset.max);
-    _controller!.initialize().then((_) {
+    _controller = CameraController(_cameras[0], ResolutionPreset.max);
+    _controller.initialize().then((_) {
       if (!mounted) {
-        _controller!.setFocusMode(FocusMode.locked);
-        _controller!.setFlashMode(FlashMode.off);
+        _controller.setFocusMode(FocusMode.locked);
+        _controller.setFlashMode(FlashMode.off);
         return;
       }
       setState(() {});
@@ -153,7 +153,7 @@ class _SearchForObjectState extends State<SearchForObject> {
     final size = MediaQuery.of(context).size;
     double scale = 0.0;
     if (_controller != null) {
-      scale = 1 / (_controller!.value.aspectRatio * size.aspectRatio);
+      scale = 1 / (_controller.value.aspectRatio * size.aspectRatio);
     }
 
     return GestureDetector(
@@ -168,7 +168,7 @@ class _SearchForObjectState extends State<SearchForObject> {
       onTap: _speechToText.isNotListening ? _startListening : _stopListening,
       onDoubleTap: ()async {
         playMusic();
-        var xFile = await _controller!.takePicture();
+        var xFile = await _controller.takePicture();
         final Uint8List bytes = await xFile.readAsBytes();
         String img64 = base64Encode(bytes);
         if(objectName.isNotEmpty) {
@@ -204,7 +204,7 @@ class _SearchForObjectState extends State<SearchForObject> {
               children: [
                 if (_controller != null)
                   Transform.scale(
-                      scale: scale, child: CameraPreview(_controller!)),
+                      scale: scale, child: CameraPreview(_controller)),
                 const Padding(
                   padding: EdgeInsets.only(bottom: 100.0),
                   child: Align(
@@ -245,16 +245,16 @@ class _SearchForObjectState extends State<SearchForObject> {
     children: [
     if (_controller != null)
     Transform.scale(
-    scale: scale, child: CameraPreview(_controller!)),
-     Padding(
-    padding: const EdgeInsets.only(bottom: 100.0),
+    scale: scale, child: CameraPreview(_controller)),
+     const Padding(
+    padding: EdgeInsets.only(bottom: 100.0),
     child: Align(
     alignment: FractionalOffset.bottomCenter,
     child: Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+    padding: EdgeInsets.symmetric(horizontal: 20.0),
     child: Text('pen',
       //objectName,
-    style: const TextStyle(
+    style: TextStyle(
     color: Colors.white24,
     ),
     ),

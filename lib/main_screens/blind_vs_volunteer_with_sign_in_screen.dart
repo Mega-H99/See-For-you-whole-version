@@ -5,7 +5,7 @@ import 'package:see_for_you_alpha_version/firebase_authentication_part/sign-in_p
 import 'package:see_for_you_alpha_version/firebase_authentication_part/sign-in_part/sign_up_widget.dart';
 
 class BlindVSVolunteerNewScreen extends StatefulWidget {
-  const BlindVSVolunteerNewScreen({Key? key}) : super(key: key);
+  const BlindVSVolunteerNewScreen({Key key}) : super(key: key);
 
   @override
   _BlindVSVolunteerNewScreenState createState() => _BlindVSVolunteerNewScreenState();

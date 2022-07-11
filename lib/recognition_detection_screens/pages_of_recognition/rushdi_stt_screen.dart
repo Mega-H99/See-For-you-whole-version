@@ -16,7 +16,7 @@ import 'package:flutter_tts/flutter_tts.dart';
 import '../../main_screens/call_blind_screen.dart';
 
 class RushdiSttScreen extends StatefulWidget {
-  const RushdiSttScreen({Key? key}) : super(key: key);
+  const RushdiSttScreen({Key key}) : super(key: key);
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -34,6 +34,11 @@ class _MyHomePageState extends State<RushdiSttScreen> {
     _initSpeech();
     speak("welcome to see for me");
     setState(() {});
+  }
+  @override
+  void dispose() {
+    _speechToText;
+    super.dispose();
   }
 
   initTts() async {

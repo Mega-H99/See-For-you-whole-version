@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
+import '../socket.io_cubit/blind_side_cubit.dart';
+
 class BlindCallingScreen extends StatelessWidget {
-  const BlindCallingScreen({Key? key}) : super(key: key);
+  const BlindCallingScreen({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return
-      Scaffold(
+    return Scaffold(
         body: Container(
         color: Colors.blueGrey.shade300,
           child: Column(

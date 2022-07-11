@@ -7,9 +7,9 @@ import'package:google_sign_in/google_sign_in.dart';
 class GoogleSignInProvider extends ChangeNotifier{
   final googleSignIn = GoogleSignIn();
 
-  GoogleSignInAccount? _user;
+  GoogleSignInAccount _user;
 
-  GoogleSignInAccount get user => _user!;
+  GoogleSignInAccount get user => _user;
 
 
 
@@ -27,16 +27,16 @@ class GoogleSignInProvider extends ChangeNotifier{
       );
 
       final UserCredential authResult =await FirebaseAuth.instance.signInWithCredential(credential);
-      final User currentUser = authResult.user!;
+      final User currentUser = authResult.user;
       // check if user is new or exist.
-      if (authResult.additionalUserInfo!.isNewUser) {
+      if (authResult.additionalUserInfo.isNewUser) {
         CollectionReference users = FirebaseFirestore.instance.collection('Users');
         FirebaseAuth auth = FirebaseAuth.instance;
-        String uid = auth.currentUser!.uid.toString();
-        String displayName = auth.currentUser!.displayName.toString();
-        String avatarURL = auth.currentUser!.photoURL.toString();
-        String email = auth.currentUser!.email.toString();
-        String? phoneNumber = auth.currentUser!.phoneNumber.toString();
+        String uid = auth.currentUser.uid.toString();
+        String displayName = auth.currentUser.displayName.toString();
+        String avatarURL = auth.currentUser.photoURL.toString();
+        String email = auth.currentUser.email.toString();
+        String phoneNumber = auth.currentUser.phoneNumber.toString();
 
         users.doc('$uid').set({
           'displayName': displayName,

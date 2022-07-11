@@ -3,9 +3,9 @@ import 'package:flutter_tts/flutter_tts.dart';
 enum TtsState { playing, stopped, paused, continued }
 
 class TTS {
-  late FlutterTts tts;
-  late List<dynamic> languages;
-  late TtsState ttsState;
+   FlutterTts tts;
+   List<dynamic> languages;
+   TtsState ttsState;
 
   TTS() {
     ttsState = TtsState.stopped;

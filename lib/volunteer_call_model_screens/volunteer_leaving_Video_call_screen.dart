@@ -4,7 +4,7 @@ import '../socket.io_cubit/blind_side_cubit.dart';
 import '../socket.io_cubit/volunteer_side_cubit.dart';
 
 class VolunteerLeavingVideoCallScreen extends StatelessWidget {
-  const VolunteerLeavingVideoCallScreen({Key? key}) : super(key: key);
+  const VolunteerLeavingVideoCallScreen({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

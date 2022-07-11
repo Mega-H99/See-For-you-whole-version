@@ -1,11 +1,11 @@
 import 'dart:convert';
 
 class UserData {
-  String? phoneNumber;
-  String? avatarURL;
-  String? displayName;
-  bool?   isBlind;
-  String? email;
+  String phoneNumber;
+  String avatarURL;
+  String displayName;
+  bool   isBlind;
+  String email;
 
   UserData({
     this.phoneNumber,
@@ -16,11 +16,11 @@ class UserData {
   });
 
   UserData copyWith({
-    String? phoneNumber,
-    String? avatarURL,
-    bool?   isBlind,
-    String? email,
-    String? displayName,
+    String phoneNumber,
+    String avatarURL,
+    bool   isBlind,
+    String email,
+    String displayName,
   }) {
     return UserData(
       phoneNumber: phoneNumber ?? this.phoneNumber,

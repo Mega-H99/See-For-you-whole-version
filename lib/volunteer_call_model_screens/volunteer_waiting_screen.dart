@@ -3,12 +3,30 @@ import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:see_for_you_alpha_version/socket.io_cubit/volunteer_side_cubit.dart';
 import '../socket.io_cubit/blind_side_cubit.dart';
 
-class VolunteerWaitingScreen extends StatelessWidget {
-  const VolunteerWaitingScreen({Key? key}) : super(key: key);
+class VolunteerWaitingScreen extends StatefulWidget {
+  const VolunteerWaitingScreen({Key key}) : super(key: key);
 
   @override
+  State<VolunteerWaitingScreen> createState() => _VolunteerWaitingScreenState();
+}
+
+class _VolunteerWaitingScreenState extends State<VolunteerWaitingScreen> {
+bool isLocalSet = false;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(const Duration(seconds: 3),(){
+      setState(() {
+        isLocalSet=true;
+      });
+    });
+
+  }
+  @override
   Widget build(BuildContext context) {
-    return Column(
+    return isLocalSet?
+    Column(
       children: [
         SizedBox(
             height: 500,
@@ -18,10 +36,12 @@ class VolunteerWaitingScreen extends StatelessWidget {
                     key: const Key("local"),
                     margin: const EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 5.0),
                     decoration: const BoxDecoration(color: Colors.black),
-                    child: RTCVideoView(
+                    child:
+                    RTCVideoView(
                       VolunteerCubitSide.get(context).localRenderer,
                       mirror: true,
-                    )),
+                    ),
+                ),
               ),
             ])),
         const SizedBox(
@@ -41,6 +61,8 @@ class VolunteerWaitingScreen extends StatelessWidget {
           ),
         ]),
       ],
+    ):Center(
+    child: Image.asset('assets/images/loadingGIF.gif'),
     );
   }
 }

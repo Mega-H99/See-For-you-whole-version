@@ -12,7 +12,7 @@ import 'package:speech_to_text/speech_to_text.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 
 class SttScreen extends StatefulWidget {
-  const SttScreen({Key? key,}) : super(key: key);
+  const SttScreen({Key key,}) : super(key: key);
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -34,6 +34,11 @@ class _MyHomePageState extends State<SttScreen> {
     greetings();
     }
 
+  @override
+  void dispose() {
+    _speechToText.stop();
+    super.dispose();
+  }
  instructions(){
    //if(tutorialsNeeded) {
      // Future.delayed((const Duration(seconds: 4)), () {

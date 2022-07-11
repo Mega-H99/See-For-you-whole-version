@@ -10,7 +10,7 @@ import 'package:socket_io_client/socket_io_client.dart';
 
 class CameraScreen extends StatefulWidget {
   const CameraScreen({
-    Key? key,
+    Key key,
   }) : super(key: key);
 
   @override
@@ -18,12 +18,12 @@ class CameraScreen extends StatefulWidget {
 }
 
 class _CameraScreenState extends State<CameraScreen> {
-  List<CameraDescription>? _cameras;
-  CameraController? _controller;
+  List<CameraDescription> _cameras;
+  CameraController _controller;
   final textDetector = GoogleMlKit.vision.textDetector();
-  late IO.Socket socket;
-  Timer? timer;
-  late TTS tts;
+  IO.Socket socket;
+  Timer timer;
+  TTS tts;
 
   @override
   void initState() {
@@ -36,7 +36,7 @@ class _CameraScreenState extends State<CameraScreen> {
   }
 
   void emitImage() async {
-    var xFile = await _controller!.takePicture();
+    var xFile = await _controller.takePicture();
     final Uint8List bytes = await xFile.readAsBytes();
     String img64 = base64Encode(bytes);
 
@@ -72,16 +72,16 @@ class _CameraScreenState extends State<CameraScreen> {
 
   @override
   void dispose() {
-    _controller!.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
   void initializeCameraController() {
-    _controller = CameraController(_cameras![0], ResolutionPreset.max);
-    _controller!.initialize().then((_) {
+    _controller = CameraController(_cameras[0], ResolutionPreset.max);
+    _controller.initialize().then((_) {
       if (!mounted) {
-        _controller!.setFocusMode(FocusMode.locked);
-        _controller!.setFlashMode(FlashMode.off);
+        _controller.setFocusMode(FocusMode.locked);
+        _controller.setFlashMode(FlashMode.off);
         return;
       }
       setState(() {});
@@ -92,7 +92,7 @@ class _CameraScreenState extends State<CameraScreen> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
-    final scale = 1 / (_controller!.value.aspectRatio * size.aspectRatio);
+    final scale = 1 / (_controller.value.aspectRatio * size.aspectRatio);
 
     return Scaffold(
       body: SizedBox(
@@ -101,7 +101,7 @@ class _CameraScreenState extends State<CameraScreen> {
         child: SafeArea(
           child: Stack(
             children: [
-              Transform.scale(scale: scale, child: CameraPreview(_controller!)),
+              Transform.scale(scale: scale, child: CameraPreview(_controller)),
               Padding(
                 padding: const EdgeInsets.only(bottom: 20.0),
                 child: Align(
@@ -109,7 +109,7 @@ class _CameraScreenState extends State<CameraScreen> {
                   child: IconButton(
                     onPressed: () async {
                       print("capturing");
-                      var xFile = await _controller!.takePicture();
+                      var xFile = await _controller.takePicture();
                       final Uint8List bytes = await xFile.readAsBytes();
                       String img64 = base64Encode(bytes);
 

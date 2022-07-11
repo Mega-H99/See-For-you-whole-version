@@ -6,257 +6,267 @@ import '../socket.io_cubit/blind_side_cubit.dart';
 import '../socket.io_cubit/blind_states.dart';
 
 class BlindInCallScreen extends StatelessWidget {
-  const BlindInCallScreen({Key? key}) : super(key: key);
+  const BlindInCallScreen({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return OrientationBuilder(
+    if(BlindCubitSide.get(context).isAllInitializedChecker){
+      BlindCubitSide.get(context).speak('You are connected with your assistant');
+      return OrientationBuilder(
         builder: (context,orientation)=>
-              orientation == Orientation.landscape?
-              Column(
-        children: [
-          GestureDetector(
-            onTapCancel: () {
-              BlindCubitSide.get(context).mute();
-              print('Mute is Pressed');
-              if (BlindCubitSide.get(context).isMute) {
-                BlindCubitSide.get(context).speak('Mic off');
-              } else {
-                BlindCubitSide.get(context).speak('Mic on');
-              }
-            },
-            onDoubleTap: () {
-              BlindCubitSide.get(context).deafen();
-              print('Deafen is pressed');
-              if (BlindCubitSide.get(context).isDeafen) {
-                BlindCubitSide.get(context).speak('Speakers on');
-              } else {
-                BlindCubitSide.get(context).speak('Speakers off');
-              }
-            },
-            onLongPress: () {
-              print('Close Call');
-              BlindCubitSide.get(context).speak('Closing  call');
-              BlindCubitSide.get(context).screenIndex = 4;
-              BlindCubitSide.get(context).smallDispose();
-              // BlindCubitSide.get(context).destroyMe();
-              BlindCubitSide.get(context).initializeMe();
-            },
-            // onVerticalDragEnd: (Details){
-            //   print('Switch Camera');
-            //   _speak('Switching camera');
-            //   _switchCamera();
-            // },
-            onHorizontalDragEnd: (details) {
-              print('Video Off');
-              BlindCubitSide.get(context).videoChange();
-              if (BlindCubitSide.get(context).isVideoOff) {
-                BlindCubitSide.get(context).speak('Video off');
-              } else {
-                BlindCubitSide.get(context).speak('Video on');
-              }
-            },
+        orientation == Orientation.landscape?
+        Column(
+          children: [
+            GestureDetector(
+              onTapCancel: () {
+                BlindCubitSide.get(context).mute();
+                print('Mute is Pressed');
+                if (BlindCubitSide.get(context).isMute) {
+                  BlindCubitSide.get(context).speak('Mic off');
+                } else {
+                  BlindCubitSide.get(context).speak('Mic on');
+                }
+              },
+              onDoubleTap: () {
+                BlindCubitSide.get(context).deafen();
+                print('Deafen is pressed');
+                if (BlindCubitSide.get(context).isDeafen) {
+                  BlindCubitSide.get(context).speak('Speakers on');
+                } else {
+                  BlindCubitSide.get(context).speak('Speakers off');
+                }
+              },
+              onLongPress: () {
+                print('Close Call');
+                BlindCubitSide.get(context).speak('Closing  call');
+                BlindCubitSide.get(context).screenIndex = 4;
+                BlindCubitSide.get(context).smallDispose();
+                // BlindCubitSide.get(context).destroyMe();
+                BlindCubitSide.get(context).initializeMe();
+              },
+              // onVerticalDragEnd: (Details){
+              //   print('Switch Camera');
+              //   _speak('Switching camera');
+              //   _switchCamera();
+              // },
+              onHorizontalDragEnd: (details) {
+                print('Video Off');
+                BlindCubitSide.get(context).videoChange();
+                if (BlindCubitSide.get(context).isVideoOff) {
+                  BlindCubitSide.get(context).speak('Video off');
+                } else {
+                  BlindCubitSide.get(context).speak('Video on');
+                }
+              },
 
-            child: SizedBox(
-                height: 200,
-                child: Row(children: [
-                  Flexible(
-                    child: Container(
-                        key: const Key("local"),
-                        margin: const EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 5.0),
-                        decoration: const BoxDecoration(color: Colors.black),
-                        child: RTCVideoView(
-                          BlindCubitSide.get(context).localRenderer,
-                          mirror: true,
-                        )),
-                  ),
-                  Flexible(
-                    child: Container(
-                        key: const Key("remote"),
-                        margin: const EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 5.0),
-                        decoration: const BoxDecoration(color: Colors.black),
-                        child: RTCVideoView(
-                          BlindCubitSide.get(context).remoteRenderer,
-                        )),
-                  ),
-                ])),
-          ),
-          const SizedBox(
-            height: 30.0,
-          ),
-          BlocConsumer<BlindCubitSide, BlindStates>(
-              listener: (context, state) {},
-              builder: (context, state) {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    CircleAvatar(
-                      key: const Key('Mute Operator'),
-                      backgroundColor: Colors.black,
-                      child: Icon(
-                        BlindCubitSide.get(context).muted,
-                        color: BlindCubitSide.get(context).colorMuted,
-                      ),
+              child: SizedBox(
+                  height: 200,
+                  child: Row(children: [
+                    Flexible(
+                      child: Container(
+                          key: const Key("local"),
+                          margin: const EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 5.0),
+                          decoration: const BoxDecoration(color: Colors.black),
+                          child: RTCVideoView(
+                            BlindCubitSide.get(context).localRenderer,
+                            mirror: true,
+                          )),
                     ),
-                    CircleAvatar(
-                      key: const Key('Deafen Operator'),
-                      backgroundColor: Colors.black,
-                      child: Icon(
-                        BlindCubitSide.get(context).deafened,
-                        color: BlindCubitSide.get(context).colorDeafen,
-                      ),
+                    Flexible(
+                      child: Container(
+                          key: const Key("remote"),
+                          margin: const EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 5.0),
+                          decoration: const BoxDecoration(color: Colors.black),
+                          child: RTCVideoView(
+                            BlindCubitSide.get(context).remoteRenderer,
+                          )),
                     ),
-                    CircleAvatar(
-                      key: const Key('Camera Operator'),
-                      backgroundColor: Colors.black,
-                      child: Icon(
-                        BlindCubitSide.get(context).whichCamera,
-                        color: Colors.white,
+                  ])),
+            ),
+            const SizedBox(
+              height: 30.0,
+            ),
+            BlocConsumer<BlindCubitSide, BlindStates>(
+                listener: (context, state) {},
+                builder: (context, state) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      CircleAvatar(
+                        key: const Key('Mute Operator'),
+                        backgroundColor: Colors.black,
+                        child: Icon(
+                          BlindCubitSide.get(context).muted,
+                          color: BlindCubitSide.get(context).colorMuted,
+                        ),
                       ),
-                    ),
-                    CircleAvatar(
-                      key: const Key('VideoOff Operator'),
-                      backgroundColor: Colors.black,
-                      child: Icon(
-                        BlindCubitSide.get(context).videoOff,
-                        color: BlindCubitSide.get(context).colorVideoOff,
+                      CircleAvatar(
+                        key: const Key('Deafen Operator'),
+                        backgroundColor: Colors.black,
+                        child: Icon(
+                          BlindCubitSide.get(context).deafened,
+                          color: BlindCubitSide.get(context).colorDeafen,
+                        ),
                       ),
-                    ),
-                    const CircleAvatar(
-                      key: Key('Close Call Operator'),
-                      backgroundColor: Colors.black,
-                      child: Icon(
-                        Icons.call_end,
-                        color: Colors.red,
+                      CircleAvatar(
+                        key: const Key('Camera Operator'),
+                        backgroundColor: Colors.black,
+                        child: Icon(
+                          BlindCubitSide.get(context).whichCamera,
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
-                  ],
-                );
-              }),
-        ],
-      ):
-              Column(
-                children: [
-                  GestureDetector(
-                    onTapCancel: () {
-                      BlindCubitSide.get(context).mute();
-                      print('Mute is Pressed');
-                      if (BlindCubitSide.get(context).isMute) {
-                        BlindCubitSide.get(context).speak('Mic off');
-                      } else {
-                        BlindCubitSide.get(context).speak('Mic on');
-                      }
-                    },
-                    onDoubleTap: () {
-                      BlindCubitSide.get(context).deafen();
-                      print('Deafen is pressed');
-                      if (BlindCubitSide.get(context).isDeafen) {
-                        BlindCubitSide.get(context).speak('Speakers on');
-                      } else {
-                        BlindCubitSide.get(context).speak('Speakers off');
-                      }
-                    },
-                    onLongPress: () {
-                      print('Close Call');
-                      BlindCubitSide.get(context).speak('Closing  call');
-                      BlindCubitSide.get(context).screenIndex = 4;
-                      BlindCubitSide.get(context).smallDispose();
-                      // BlindCubitSide.get(context).destroyMe();
-                      BlindCubitSide.get(context).initializeMe();
-                    },
-                    // onVerticalDragEnd: (Details){
-                    //   print('Switch Camera');
-                    //   _speak('Switching camera');
-                    //   _switchCamera();
-                    // },
-                    onHorizontalDragEnd: (details) {
-                      print('Video Off');
-                      BlindCubitSide.get(context).videoChange();
-                      if (BlindCubitSide.get(context).isVideoOff) {
-                        BlindCubitSide.get(context).speak('Video off');
-                      } else {
-                        BlindCubitSide.get(context).speak('Video on');
-                      }
-                    },
+                      CircleAvatar(
+                        key: const Key('VideoOff Operator'),
+                        backgroundColor: Colors.black,
+                        child: Icon(
+                          BlindCubitSide.get(context).videoOff,
+                          color: BlindCubitSide.get(context).colorVideoOff,
+                        ),
+                      ),
+                      const CircleAvatar(
+                        key: Key('Close Call Operator'),
+                        backgroundColor: Colors.black,
+                        child: Icon(
+                          Icons.call_end,
+                          color: Colors.red,
+                        ),
+                      ),
+                    ],
+                  );
+                }),
+          ],
+        ):
+        Column(
+          children: [
+            GestureDetector(
+              onTapCancel: () {
+                BlindCubitSide.get(context).mute();
+                print('Mute is Pressed');
+                if (BlindCubitSide.get(context).isMute) {
+                  BlindCubitSide.get(context).speak('Mic off');
+                } else {
+                  BlindCubitSide.get(context).speak('Mic on');
+                }
+              },
+              onDoubleTap: () {
+                BlindCubitSide.get(context).deafen();
+                print('Deafen is pressed');
+                if (BlindCubitSide.get(context).isDeafen) {
+                  BlindCubitSide.get(context).speak('Speakers on');
+                } else {
+                  BlindCubitSide.get(context).speak('Speakers off');
+                }
+              },
+              onLongPress: () {
+                print('Close Call');
+                BlindCubitSide.get(context).speak('Closing  call');
+                BlindCubitSide.get(context).screenIndex = 4;
+                BlindCubitSide.get(context).smallDispose();
+                // BlindCubitSide.get(context).destroyMe();
+                BlindCubitSide.get(context).initializeMe();
+              },
+              // onVerticalDragEnd: (Details){
+              //   print('Switch Camera');
+              //   _speak('Switching camera');
+              //   _switchCamera();
+              // },
+              onHorizontalDragEnd: (details) {
+                print('Video Off');
+                BlindCubitSide.get(context).videoChange();
+                if (BlindCubitSide.get(context).isVideoOff) {
+                  BlindCubitSide.get(context).speak('Video off');
+                } else {
+                  BlindCubitSide.get(context).speak('Video on');
+                }
+              },
 
-                    child: SizedBox(
-                        height: 500,
-                        child: Column(children: [
-                          Flexible(
-                            child: Container(
-                                key: const Key("local"),
-                                margin: const EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 5.0),
-                                decoration: const BoxDecoration(color: Colors.black),
-                                child: RTCVideoView(
-                                  BlindCubitSide.get(context).localRenderer,
-                                  mirror: true,
-                                )),
-                          ),
-                          Flexible(
-                            child: Container(
-                                key: const Key("remote"),
-                                margin: const EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 5.0),
-                                decoration: const BoxDecoration(color: Colors.black),
-                                child: RTCVideoView(
-                                  BlindCubitSide.get(context).remoteRenderer,
-                                )),
-                          ),
-                        ])),
-                  ),
-                  const SizedBox(
-                    height: 30.0,
-                  ),
-                  BlocConsumer<BlindCubitSide, BlindStates>(
-                      listener: (context, state) {},
-                      builder: (context, state) {
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            CircleAvatar(
-                              key: const Key('Mute Operator'),
-                              backgroundColor: Colors.black,
-                              child: Icon(
-                                BlindCubitSide.get(context).muted,
-                                color: BlindCubitSide.get(context).colorMuted,
-                              ),
-                            ),
-                            CircleAvatar(
-                              key: const Key('Deafen Operator'),
-                              backgroundColor: Colors.black,
-                              child: Icon(
-                                BlindCubitSide.get(context).deafened,
-                                color: BlindCubitSide.get(context).colorDeafen,
-                              ),
-                            ),
-                            CircleAvatar(
-                              key: const Key('Camera Operator'),
-                              backgroundColor: Colors.black,
-                              child: Icon(
-                                BlindCubitSide.get(context).whichCamera,
-                                color: Colors.white,
-                              ),
-                            ),
-                            CircleAvatar(
-                              key: const Key('VideoOff Operator'),
-                              backgroundColor: Colors.black,
-                              child: Icon(
-                                BlindCubitSide.get(context).videoOff,
-                                color: BlindCubitSide.get(context).colorVideoOff,
-                              ),
-                            ),
-                            const CircleAvatar(
-                              key: Key('Close Call Operator'),
-                              backgroundColor: Colors.black,
-                              child: Icon(
-                                Icons.call_end,
-                                color: Colors.red,
-                              ),
-                            ),
-                          ],
-                        );
-                      }),
-                ],
-              ),
-    );
+              child: SizedBox(
+                  height: 500,
+                  child: Column(children: [
+                    Flexible(
+                      child: Container(
+                          key: const Key("local"),
+                          margin: const EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 5.0),
+                          decoration: const BoxDecoration(color: Colors.black),
+                          child: RTCVideoView(
+                            BlindCubitSide.get(context).localRenderer,
+                            mirror: true,
+                          )),
+                    ),
+                    Flexible(
+                      child: Container(
+                          key: const Key("remote"),
+                          margin: const EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 5.0),
+                          decoration: const BoxDecoration(color: Colors.black),
+                          child: RTCVideoView(
+                            BlindCubitSide.get(context).remoteRenderer,
+                          )),
+                    ),
+                  ])),
+            ),
+            const SizedBox(
+              height: 30.0,
+            ),
+            BlocConsumer<BlindCubitSide, BlindStates>(
+                listener: (context, state) {},
+                builder: (context, state) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      CircleAvatar(
+                        key: const Key('Mute Operator'),
+                        backgroundColor: Colors.black,
+                        child: Icon(
+                          BlindCubitSide.get(context).muted,
+                          color: BlindCubitSide.get(context).colorMuted,
+                        ),
+                      ),
+                      CircleAvatar(
+                        key: const Key('Deafen Operator'),
+                        backgroundColor: Colors.black,
+                        child: Icon(
+                          BlindCubitSide.get(context).deafened,
+                          color: BlindCubitSide.get(context).colorDeafen,
+                        ),
+                      ),
+                      CircleAvatar(
+                        key: const Key('Camera Operator'),
+                        backgroundColor: Colors.black,
+                        child: Icon(
+                          BlindCubitSide.get(context).whichCamera,
+                          color: Colors.white,
+                        ),
+                      ),
+                      CircleAvatar(
+                        key: const Key('VideoOff Operator'),
+                        backgroundColor: Colors.black,
+                        child: Icon(
+                          BlindCubitSide.get(context).videoOff,
+                          color: BlindCubitSide.get(context).colorVideoOff,
+                        ),
+                      ),
+                      const CircleAvatar(
+                        key: Key('Close Call Operator'),
+                        backgroundColor: Colors.black,
+                        child: Icon(
+                          Icons.call_end,
+                          color: Colors.red,
+                        ),
+                      ),
+                    ],
+                  );
+                }),
+          ],
+        ),
+      );
+    }
+    else{
+      BlindCubitSide.get(context).speak('Loading please wait');
+      return Center(
+         child:Image.asset('assets/images/loadingGIF.gif') ,
+      );
+    }
+
   }
 }

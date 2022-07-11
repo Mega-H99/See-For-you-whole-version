@@ -12,7 +12,7 @@ import 'package:socket_io_client/socket_io_client.dart';
 
 class PlacesScreen extends StatefulWidget {
   const PlacesScreen({
-    Key? key,
+    Key key,
   }) : super(key: key);
 
   @override
@@ -20,14 +20,14 @@ class PlacesScreen extends StatefulWidget {
 }
 
 class _PlacesScreenState extends State<PlacesScreen> {
-  List<CameraDescription>? _cameras;
-  CameraController? _controller;
+  List<CameraDescription> _cameras;
+  CameraController _controller;
   final textDetector = GoogleMlKit.vision.textDetector();
-  Socket? socket;
+  Socket socket;
   // TextEditingController _itemNameController = TextEditingController();
 
-  Timer? timer;
-  TTS? tts;
+  Timer timer;
+  TTS tts;
 
   @override
   void initState() {
@@ -36,7 +36,7 @@ class _PlacesScreenState extends State<PlacesScreen> {
     initializeSocket();
     initializeTTS();
     initAudioPlayerCameraSound();
-    tts!.speak('Welcome to Places recognition mode'
+    tts.speak('Welcome to Places recognition mode'
         'Please focus your mobile camera to detect place you are in'
         'then double tap on the screen to capture and recognize the place you are in'
         'if you want to return to the main menu of all features '
@@ -48,7 +48,7 @@ class _PlacesScreenState extends State<PlacesScreen> {
   }
 
   void emitImage() async {
-    var xFile = await _controller!.takePicture();
+    var xFile = await _controller.takePicture();
     final Uint8List bytes = await xFile.readAsBytes();
     String img64 = base64Encode(bytes);
 
@@ -81,17 +81,17 @@ class _PlacesScreenState extends State<PlacesScreen> {
 
   @override
   void dispose() {
-    _controller!.dispose();
+    _controller.dispose();
     destroyAudioPlayerCameraSound();
     super.dispose();
   }
 
   void initializeCameraController() {
-    _controller = CameraController(_cameras![0], ResolutionPreset.max);
-    _controller!.initialize().then((_) {
+    _controller = CameraController(_cameras[0], ResolutionPreset.max);
+    _controller.initialize().then((_) {
       if (!mounted) {
-        _controller!.setFocusMode(FocusMode.locked);
-        _controller!.setFlashMode(FlashMode.off);
+        _controller.setFocusMode(FocusMode.locked);
+        _controller.setFlashMode(FlashMode.off);
         return;
       }
       setState(() {});
@@ -103,7 +103,7 @@ class _PlacesScreenState extends State<PlacesScreen> {
     final size = MediaQuery.of(context).size;
     double scale = 0.0;
     if (_controller != null) {
-      scale = 1 / (_controller!.value.aspectRatio * size.aspectRatio);
+      scale = 1 / (_controller.value.aspectRatio * size.aspectRatio);
     }
 
     return GestureDetector(
@@ -117,7 +117,7 @@ class _PlacesScreenState extends State<PlacesScreen> {
       },
       onDoubleTap: ()async {
         playMusic();
-        var xFile = await _controller!.takePicture();
+        var xFile = await _controller.takePicture();
         final Uint8List bytes = await xFile.readAsBytes();
         String img64 = base64Encode(bytes);
 
@@ -151,7 +151,7 @@ class _PlacesScreenState extends State<PlacesScreen> {
               children: [
                 if (_controller != null)
                   Transform.scale(
-                      scale: scale, child: CameraPreview(_controller!)),
+                      scale: scale, child: CameraPreview(_controller)),
                 // Padding(
                 //   padding: const EdgeInsets.only(bottom: 100.0),
                 //   child: Align(
