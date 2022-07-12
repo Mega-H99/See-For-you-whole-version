@@ -1,27 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 
-class BluetoothDeviceListEntry extends StatelessWidget {
+import '../recognition_detection_screens/utils/tts.dart';
+
+class BluetoothDeviceListEntry extends StatefulWidget {
   final Function onTap;
   final BluetoothDevice device;
 
-  BluetoothDeviceListEntry({this.onTap, @required this.device});
+   BluetoothDeviceListEntry({this.onTap, @required this.device});
+
+  @override
+  State<BluetoothDeviceListEntry> createState() => _BluetoothDeviceListEntryState();
+}
+
+class _BluetoothDeviceListEntryState extends State<BluetoothDeviceListEntry> {
 
 
+
+  TTS tts;
+  void initializeTTS() {
+    tts = TTS();
+  }
+
+  @override
+  void initState() {
+    initializeTTS();
+    if (widget.device.name == "HC-06") {
+      tts.speak("Searching for smart shoes");
+      Future.delayed(const Duration(seconds: 5),(){
+        widget.onTap();
+      });
+
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    if (device.name == "HC-06") {
-      onTap();
-    }
     return ListTile(
-      onTap: onTap,
-      leading: Icon(Icons.devices),
-      title: Text(device.name ?? "Unknown device"),
-      subtitle: Text(device.address.toString()),
-      trailing: FlatButton(
-        child: Text('Connect'),
-        onPressed: onTap,
+      onTap: widget.onTap,
+      leading: const Icon(Icons.devices),
+      title: Text(widget.device.name ?? "Unknown device"),
+      subtitle: Text(widget.device.address.toString()),
+      trailing: MaterialButton(
+        child: const Text('Connect'),
+        onPressed: widget.onTap,
         color: Colors.blue,
       ),
     );

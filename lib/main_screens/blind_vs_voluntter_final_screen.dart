@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import '../recognition_detection_screens/utils/tts.dart';
 import 'call_screen_volunteer.dart';
 import 'choose-part.dart';
 
@@ -13,29 +15,24 @@ class BlindVSVolunteerFinalScreen extends StatefulWidget {
 class _BlindVSVolunteerFinalScreenState extends State<BlindVSVolunteerFinalScreen> {
   bool isBlind = false;
 
-  FlutterTts flutterTts = FlutterTts();
+  TTS tts;
 
   @override
   void initState() {
     super.initState();
-    initTts();
-    speak("welcome to see for me "
+    initializeTTS();
+    tts.speak("welcome to see for me "
         "For Visual aid tap once on the screen"
         "else if you are a volunteer long press on the screen");
-    setState(() {});
+    Future.delayed(const Duration(minutes: 3), () {
+      SystemNavigator.pop();
+    });
   }
 
-  initTts() async {
-    await flutterTts.setLanguage("en-us");
-    await flutterTts.setPitch(1);
-    await flutterTts.setSpeechRate(0.4);
-    await flutterTts.awaitSpeakCompletion(true);
+  void initializeTTS() {
+    tts = TTS();
   }
 
-  speak(String wordsToSay) async {
-    await flutterTts.speak(wordsToSay);
-    setState(() {});
-  }
 
   @override
   Widget build(BuildContext context) {

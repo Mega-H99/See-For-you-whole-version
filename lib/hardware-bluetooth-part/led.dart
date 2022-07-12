@@ -8,6 +8,7 @@ import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:see_for_you_alpha_version/main_screens/choose-part.dart';
 
+import '../recognition_detection_screens/utils/tts.dart';
 import 'audioplayer_bluetooth_alarm.dart';
 
 class ChatPage extends StatefulWidget {
@@ -42,28 +43,34 @@ class _ChatPage extends State<ChatPage> {
 
   bool isDisconnecting = false;
 
-  FlutterTts flutterTts = FlutterTts();
+  TTS tts;
 
-  initTts() async {
-    await flutterTts.setLanguage("en-us");
-    await flutterTts.setPitch(1);
-    await flutterTts.setSpeechRate(0.4);
-    await flutterTts.awaitSpeakCompletion(true);
+  void initializeTTS() {
+    tts = TTS();
   }
 
-  speak(String wordsToSay) async {
-    await flutterTts.speak(wordsToSay);
-    setState(() {});
+  intro() async{
+    if(widget.server.name=="HC-06"){
+      tts.speak("Connected to smart shoes. "
+          "If an obstacle is detected you will hear the alarm. "
+          "Therefore you need to change your direction while walking. "
+          "If you don't hear the alarm then your track is safe. "
+          "Enjoy your walk.  "
+          "Long press if you want to exit app.  ");
+      Future.delayed(const Duration(seconds: 10),);
+    }
+    else{
+      tts.speak("Connected to wrong device please long press to exit app");
+    }
   }
-
 
 
   @override
   void initState() {
     super.initState();
-    initTts();
+    initializeTTS();
     initAudioPlayerAlarmSound();
-
+    intro();
     BluetoothConnection.toAddress(widget.server.address).then((_connection) {
       print('Connected to the device');
       connection = _connection;
@@ -89,7 +96,7 @@ class _ChatPage extends State<ChatPage> {
         }
       });
     }).catchError((error) {
-      print('Cannot connect, exception occured');
+      print('Cannot connect, exception occurred');
       print(error);
     });
   }
@@ -119,9 +126,9 @@ class _ChatPage extends State<ChatPage> {
                 (text) {
                   return text == '/shrug' ? '¯\\_(ツ)_/¯' : text;
                 }(_message.text.trim()),
-                style: TextStyle(color: Colors.white)),
-            padding: EdgeInsets.all(12.0),
-            margin: EdgeInsets.only(bottom: 8.0, left: 8.0, right: 8.0),
+                style: const TextStyle(color: Colors.white)),
+            padding: const EdgeInsets.all(12.0),
+            margin: const EdgeInsets.only(bottom: 8.0, left: 8.0, right: 8.0),
             width: 222.0,
             decoration: BoxDecoration(
                 color:
@@ -137,8 +144,8 @@ class _ChatPage extends State<ChatPage> {
 
     return GestureDetector(
       onLongPress: () async{
-        Future.delayed(const Duration(seconds: 2),(){
-          speak('Closing app');
+        tts.speak('Closing app');
+        Future.delayed(const Duration(seconds: 3),(){
         }).then((value) => SystemNavigator.pop());
 
 

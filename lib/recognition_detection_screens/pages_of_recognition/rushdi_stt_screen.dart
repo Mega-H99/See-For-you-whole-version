@@ -14,6 +14,7 @@ import 'package:speech_to_text/speech_to_text.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 
 import '../../main_screens/call_blind_screen.dart';
+import '../utils/tts.dart';
 
 class RushdiSttScreen extends StatefulWidget {
   const RushdiSttScreen({Key key}) : super(key: key);
@@ -26,13 +27,18 @@ class _MyHomePageState extends State<RushdiSttScreen> {
   final SpeechToText _speechToText = SpeechToText();
   bool _speechEnabled = false;
   String _lastWords = '';
-  FlutterTts flutterTts = FlutterTts();
+  TTS tts;
+
+  void initializeTTS() {
+    tts = TTS();
+  }
 
   @override
   void initState() {
     super.initState();
     _initSpeech();
-    speak("welcome to see for me");
+    initializeTTS();
+    tts.speak("Welcome see for me assistant mode.  ");
     setState(() {});
   }
   @override
@@ -41,12 +47,7 @@ class _MyHomePageState extends State<RushdiSttScreen> {
     super.dispose();
   }
 
-  initTts() async {
-    await flutterTts.setLanguage("en-us");
-    await flutterTts.setPitch(1);
-    await flutterTts.setSpeechRate(0.4);
-    await flutterTts.awaitSpeakCompletion(true);
-  }
+
 
   /// This has to happen only once per app
   void _initSpeech() async {
@@ -70,10 +71,6 @@ class _MyHomePageState extends State<RushdiSttScreen> {
     setState(() {});
   }
 
-  speak(String wordsToSay) async {
-    await flutterTts.speak(wordsToSay);
-    setState(() {});
-  }
 
   /// This is the callback that the SpeechToText plugin calls when
   /// the platform returns recognized words.
